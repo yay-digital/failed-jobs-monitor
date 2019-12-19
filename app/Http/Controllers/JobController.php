@@ -39,6 +39,8 @@ class JobController extends Controller
 
         Artisan::call('queue:retry '.$id);
 
+        session()->flash('info', 'Job '.$id. ' has been queued for retry');
+
         return redirect(route('index'));
     }
 
@@ -60,6 +62,8 @@ class JobController extends Controller
         DB::table('failed_jobs')
             ->where('id', '=', $id)
             ->delete();
+
+        session()->flash('info', 'Job '.$id. ' has been deleted');
 
         return redirect(route('index'));
     }

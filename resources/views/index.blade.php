@@ -1,6 +1,12 @@
 @extends('layout')
 
 @section('content')
+    @if ($message = session('info'))
+        <div class="alert alert-info alert-block mt-5">
+            <strong>{{ $message }}</strong>
+        </div>
+    @endif
+
     <table class="table table-bordered table-hover mt-5">
         <caption class="footer">
             {{ $jobs->links() }}
