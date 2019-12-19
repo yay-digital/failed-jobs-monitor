@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($jobs as $job)
+        @forelse($jobs as $job)
             <tr>
                 <td>{{ $job['id'] }}</td>
                 <td>{{ $job['class'] }}</td>
@@ -30,7 +30,13 @@
                     </a>
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="5" class="text-center alert alert-success">
+                    No failed jobs.
+                </td>
+            </tr>
+        @endforelse
         </tbody>
     </table>
 @endsection
