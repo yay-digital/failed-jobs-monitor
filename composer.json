@@ -1,6 +1,6 @@
 {
     "name": "yay-innovations/failed-jobs-monitor",
-    "type": "project",
+    "type": "library",
     "description": "View + retry + delete failed jobs.",
     "require": {
         "php": "^7.1.3",
