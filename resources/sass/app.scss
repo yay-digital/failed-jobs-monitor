@@ -32,3 +32,12 @@ html, body {
     width: 18px;
     height: 18px;
 }
+
+table caption .pagination {
+    margin-bottom: 0;
+    float: right;
+}
+
+.footer__count {
+    line-height: 36px;
+}

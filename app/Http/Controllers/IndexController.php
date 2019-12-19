@@ -9,8 +9,9 @@ class IndexController extends Controller
     public function show()
     {
         $jobs = DB::table('failed_jobs')
-            ->get()
-            ->map(function ($job) {
+            ->paginate();
+
+        $jobs->getCollection()->transform(function ($job) {
                 $payload = json_decode($job->payload);
                 $command = unserialize($payload->data->command);
                 preg_match('/(.*?) in \//', $job->exception, $exception);

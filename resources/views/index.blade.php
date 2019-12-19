@@ -2,6 +2,13 @@
 
 @section('content')
     <table class="table table-bordered table-hover mt-5">
+        <caption class="footer">
+            {{ $jobs->links() }}
+
+            <span class="footer__count">
+                {{ $jobs->total() }} failed jobs
+            </span>
+        </caption>
         <thead>
         <tr>
             <th scope="col">ID</th>
