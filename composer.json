@@ -18,7 +18,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "providers": [
+                "YayInnovations\\FailedJobsMonitor\\FailedJobsMonitorProvider"
+            ]
         }
     },
     "autoload": {
