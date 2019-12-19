@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\VarDumper\Caster\ReflectionCaster;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\HtmlDumper;
+use Symfony\Component\VarDumper\VarDumper;
 
 class JobController extends Controller
 {
     public function show($id)
     {
+        $this->configureDumper();
+
         $job = $this->getJob($id);
 
         $payload = json_decode($job->payload);
@@ -18,7 +24,11 @@ class JobController extends Controller
             'id' => $job->id,
             'class' => get_class($command),
             'command' => $command,
-            'exception' => $job->exception,
+            'exception' => [
+                'error' => $this->parseError($job->exception),
+                'location' => $this->parseErrorLocation($job->exception),
+                'stack' => $this->parseErrorStack($job->exception),
+            ],
             'failed_at' => $job->failed_at
         ]);
     }
@@ -69,5 +79,64 @@ class JobController extends Controller
         }
 
         return $job;
+    }
+
+    protected function configureDumper(): void
+    {
+        $cloner = new VarCloner();
+        $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
+
+        $dumper = new HtmlDumper();
+        $dumper->setTheme('light');
+        $dumper->setDisplayOptions([
+            'maxDepth' => 2,
+        ]);
+
+        VarDumper::setHandler(function ($var) use ($cloner, $dumper) {
+            $dumper->dump($cloner->cloneVar($var));
+        });
+    }
+
+    private function parseError(string $exception)
+    {
+        $basePath = $this->getBasePath($exception);
+
+        $line = explode("\n", $exception)[0];
+        $line = str_replace($basePath, '', $line);
+
+        preg_match('/(.*?) in .*/', $line, $matches);
+
+        return $matches[1];
+    }
+
+    private function parseErrorLocation(string $exception)
+    {
+        $basePath = $this->getBasePath($exception);
+
+        $line = explode("\n", $exception)[0];
+        $line = str_replace($basePath, '', $line);
+
+        preg_match('/.*? in (.*)/', $line, $matches);
+
+        return $matches[1];
+    }
+
+    private function parseErrorStack(string $exception)
+    {
+        $lines = explode("\n", $exception);
+        array_shift($lines);
+        array_shift($lines);
+
+        $exception = join("\n", $lines);
+
+        $basePath = $this->getBasePath($exception);
+
+        return str_replace($basePath, '', $exception);
+    }
+
+    private function getBasePath(string $exception): string
+    {
+        preg_match('/#\d+ (.*?\/)vendor\/.*?\.php\(\d+\)/', $exception, $matches);
+        return $matches[1];
     }
 }
