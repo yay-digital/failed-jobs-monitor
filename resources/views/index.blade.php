@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-    <table class="table mt-5">
+    <table class="table table-bordered table-hover mt-5">
         <thead>
         <tr>
             <th scope="col">ID</th>
@@ -31,8 +31,8 @@
                 </td>
             </tr>
         @empty
-            <tr>
-                <td colspan="5" class="text-center alert alert-success">
+            <tr class="table-success">
+                <td colspan="5" class="text-center">
                     No failed jobs.
                 </td>
             </tr>
