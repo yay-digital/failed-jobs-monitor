@@ -44,7 +44,7 @@ class FailedJobsMonitorProvider extends ServiceProvider
 
         $this->publishes([
             $configPath => $this->app->configPath(self::PACKAGE.'.php'),
-        ]);
+        ], self::PACKAGE.'-config');
         $this->mergeConfigFrom($configPath, self::PACKAGE);
     }
 
