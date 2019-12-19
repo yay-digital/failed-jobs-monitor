@@ -25,7 +25,7 @@
                 <td>{{ $job['class'] }}</td>
                 <td title="{{ $job['exception'] }}">{{ \Illuminate\Support\Str::limit($job['exception'], 70) }}</td>
                 <td>{{ $job['failed_at'] }}</td>
-                <td>
+                <td class="text-center">
                     <a class="action" href="{{ route('show', $job['id']) }}" title="Show Details">
                         <i data-feather="info"></i>
                     </a>
