@@ -11,7 +11,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Failed Jobs Monitor</a>
+    <a class="navbar-brand" href="{{ route('failed-jobs-monitor.index') }}">Failed Jobs Monitor</a>
 </nav>
 <div class="container">
     @yield('content')

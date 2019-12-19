@@ -13,9 +13,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'IndexController@show')->name('index');
+Route::name('failed-jobs-monitor.')->group(function () {
+    Route::get('/', 'IndexController@show')->name('index');
 
-Route::get('/jobs/{id}', 'JobController@show')->name('show');
-Route::get('/jobs/{id}/retry', 'JobController@retry')->name('retry');
-Route::get('/jobs/{id}/delete', 'JobController@confirmDelete')->name('confirmDelete');
-Route::post('/jobs/{id}/delete', 'JobController@delete')->name('delete');
+    Route::get('/job/{id}', 'JobController@show')->name('show');
+    Route::get('/job/{id}/retry', 'JobController@retry')->name('retry');
+    Route::get('/job/{id}/delete', 'JobController@confirmDelete')->name('confirmDelete');
+    Route::post('/job/{id}/delete', 'JobController@delete')->name('delete');
+});
