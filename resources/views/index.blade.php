@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('failed-jobs-monitor::layout')
 
 @section('content')
     @if ($message = session('info'))

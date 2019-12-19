@@ -20,7 +20,7 @@ class JobController extends Controller
         $payload = json_decode($job->payload);
         $command = unserialize($payload->data->command);
 
-        return view('show', [
+        return view('failed-jobs-monitor::show', [
             'id' => $job->id,
             'class' => get_class($command),
             'command' => $command,
@@ -51,7 +51,7 @@ class JobController extends Controller
         $payload = json_decode($job->payload);
         $command = unserialize($payload->data->command);
 
-        return view('delete', [
+        return view('failed-jobs-monitor::delete', [
             'id' => $job->id,
             'class' => get_class($command),
         ]);

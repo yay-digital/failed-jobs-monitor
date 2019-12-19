@@ -7,7 +7,7 @@
     <title>Failed Jobs</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('/css/app.css', 'vendor/failed-jobs-monitor') }}">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -18,6 +18,6 @@
 </div>
 
 <!-- Scripts -->
-<script src="{{ mix('/js/app.js') }}"></script>
+<script src="{{ mix('/js/app.js', 'vendor/failed-jobs-monitor') }}"></script>
 </body>
 </html>

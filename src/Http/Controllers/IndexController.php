@@ -24,7 +24,7 @@ class IndexController extends Controller
                 ];
             });
 
-        return view('index', [
+        return view('failed-jobs-monitor::index', [
             'jobs' => $jobs,
         ]);
     }

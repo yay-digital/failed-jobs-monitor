@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('failed-jobs-monitor::layout')
 
 @section('content')
     <h1 class="mt-5">Job Details: <code>{{ $class }}</code> (ID: {{ $id }})</h1>

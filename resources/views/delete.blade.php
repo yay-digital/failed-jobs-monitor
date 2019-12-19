@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('failed-jobs-monitor::layout')
 
 @section('content')
     <h1 class="mt-5">You really want to delete job <code>{{ $class }}</code> (ID: {{ $id }})?</h1>

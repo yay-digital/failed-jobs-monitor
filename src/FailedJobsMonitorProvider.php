@@ -60,7 +60,7 @@ class FailedJobsMonitorProvider extends ServiceProvider
 
         Route::group([
             'prefix' => $config->get(self::PACKAGE.'.path'),
-            'namespace' => 'Laravel\Horizon\Http\Controllers',
+            'namespace' => 'YayInnovations\FailedJobsMonitor\Http\Controllers',
             'middleware' => $config->get(self::PACKAGE.'.middleware', 'web'),
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
@@ -72,7 +72,7 @@ class FailedJobsMonitorProvider extends ServiceProvider
         $publicPath = $this->app->make('path.public');
 
         $this->publishes([
-            __DIR__.'/../public' => $publicPath.'./vendor/'.self::PACKAGE,
+            __DIR__.'/../public' => $publicPath.'/vendor/'.self::PACKAGE,
         ], self::PACKAGE.'-assets');
     }
 }
