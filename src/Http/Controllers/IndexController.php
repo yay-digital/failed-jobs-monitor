@@ -1,6 +1,6 @@
 <?php
 
-namespace YayInnovations\FailedJobsMonitor\Http\Controllers;
+namespace YayDigital\FailedJobsMonitor\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 

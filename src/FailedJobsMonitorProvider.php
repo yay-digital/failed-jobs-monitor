@@ -1,6 +1,6 @@
 <?php
 
-namespace YayInnovations\FailedJobsMonitor;
+namespace YayDigital\FailedJobsMonitor;
 
 use Illuminate\Config\Repository;
 use Illuminate\Support\Facades\Route;
@@ -60,7 +60,7 @@ class FailedJobsMonitorProvider extends ServiceProvider
 
         Route::group([
             'prefix' => $config->get(self::PACKAGE.'.path'),
-            'namespace' => 'YayInnovations\FailedJobsMonitor\Http\Controllers',
+            'namespace' => 'YayDigital\FailedJobsMonitor\Http\Controllers',
             'middleware' => $config->get(self::PACKAGE.'.middleware', 'web'),
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');

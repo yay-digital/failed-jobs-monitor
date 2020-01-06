@@ -1,5 +1,5 @@
 {
-    "name": "yay-innovations/failed-jobs-monitor",
+    "name": "yay-digital/failed-jobs-monitor",
     "type": "library",
     "description": "View + retry + delete failed jobs.",
     "require": {
@@ -19,13 +19,13 @@
     "extra": {
         "laravel": {
             "providers": [
-                "YayInnovations\\FailedJobsMonitor\\FailedJobsMonitorProvider"
+                "YayDigital\\FailedJobsMonitor\\FailedJobsMonitorProvider"
             ]
         }
     },
     "autoload": {
         "psr-4": {
-            "YayInnovations\\FailedJobsMonitor\\": "src/"
+            "YayDigital\\FailedJobsMonitor\\": "src/"
         }
     },
     "minimum-stability": "dev",
