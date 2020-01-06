@@ -19,7 +19,7 @@ class IndexController extends Controller
                 return [
                     'id' => $job->id,
                     'class' => get_class($command),
-                    'exception' => $exception[1],
+                    'exception' => optional($exception)[1],
                     'failed_at' => $job->failed_at
                 ];
             });
