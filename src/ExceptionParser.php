@@ -4,7 +4,7 @@ namespace YayDigital\FailedJobsMonitor;
 
 class ExceptionParser
 {
-    const RE_EXCEPTION_DETAILS = '/(.*) in (.*)/';
+    const RE_EXCEPTION_DETAILS = '/(.*) in ([^ ]*\.php:\d+)/s';
 
     /**
      * @var string
@@ -16,33 +16,44 @@ class ExceptionParser
         $this->exception = $exception;
     }
 
-    public function getError(): string
+    public function getError(): ?string
     {
         $basePath = $this->getBasePath($this->exception);
+        $exception = str_replace($basePath, '', $this->exception);
 
-        $line = explode("\n", $this->exception)[0];
-        $line = str_replace($basePath, '', $line);
+        preg_match(self::RE_EXCEPTION_DETAILS, $exception, $matches);
 
-        preg_match(self::RE_EXCEPTION_DETAILS, $line, $matches);
+        $error = optional($matches)[1];
 
-        return $matches[1];
+        if ($error !== null) {
+            return trim($error);
+        }
+
+        return null;
     }
 
-    public function getLocation(): string
+    public function getLocation(): ?string
     {
         $basePath = $this->getBasePath($this->exception);
+        $exception = str_replace($basePath, '', $this->exception);
 
-        $line = explode("\n", $this->exception)[0];
-        $line = str_replace($basePath, '', $line);
+        preg_match(self::RE_EXCEPTION_DETAILS, $exception, $matches);
 
-        preg_match(self::RE_EXCEPTION_DETAILS, $line, $matches);
+        $location = optional($matches)[2];
 
-        return $matches[2];
+        if ($location !== null) {
+            return $location;
+        }
+
+        return null;
     }
 
     public function getStack(): string
     {
-        $lines = explode("\n", $this->exception);
+        preg_match(self::RE_EXCEPTION_DETAILS, $this->exception, $matches);
+
+        [, $lines] = explode($matches[0], $this->exception);
+        $lines = explode("\n", $lines);
         array_shift($lines);
         array_shift($lines);
 
