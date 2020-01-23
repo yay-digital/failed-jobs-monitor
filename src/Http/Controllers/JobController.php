@@ -8,6 +8,7 @@ use Symfony\Component\VarDumper\Caster\ReflectionCaster;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\VarDumper\VarDumper;
+use YayDigital\FailedJobsMonitor\ExceptionParser;
 
 class JobController extends Controller
 {
@@ -20,14 +21,16 @@ class JobController extends Controller
         $payload = json_decode($job->payload);
         $command = unserialize($payload->data->command);
 
+        $exception = new ExceptionParser($job->exception);
+
         return view('failed-jobs-monitor::show', [
             'id' => $job->id,
             'class' => get_class($command),
             'command' => $command,
             'exception' => [
-                'error' => $this->parseError($job->exception),
-                'location' => $this->parseErrorLocation($job->exception),
-                'stack' => $this->parseErrorStack($job->exception),
+                'error' => $exception->getError(),
+                'location' => $exception->getLocation(),
+                'stack' => $exception->getStack(),
             ],
             'failed_at' => $job->failed_at
         ]);
@@ -99,48 +102,5 @@ class JobController extends Controller
         VarDumper::setHandler(function ($var) use ($cloner, $dumper) {
             $dumper->dump($cloner->cloneVar($var));
         });
-    }
-
-    private function parseError(string $exception)
-    {
-        $basePath = $this->getBasePath($exception);
-
-        $line = explode("\n", $exception)[0];
-        $line = str_replace($basePath, '', $line);
-
-        preg_match('/(.*?) in .*/', $line, $matches);
-
-        return $matches[1];
-    }
-
-    private function parseErrorLocation(string $exception)
-    {
-        $basePath = $this->getBasePath($exception);
-
-        $line = explode("\n", $exception)[0];
-        $line = str_replace($basePath, '', $line);
-
-        preg_match('/.*? in (.*)/', $line, $matches);
-
-        return $matches[1];
-    }
-
-    private function parseErrorStack(string $exception)
-    {
-        $lines = explode("\n", $exception);
-        array_shift($lines);
-        array_shift($lines);
-
-        $exception = join("\n", $lines);
-
-        $basePath = $this->getBasePath($exception);
-
-        return str_replace($basePath, '', $exception);
-    }
-
-    private function getBasePath(string $exception): string
-    {
-        preg_match('/#\d+ (.*?\/)vendor\/.*?\.php\(\d+\)/', $exception, $matches);
-        return $matches[1];
     }
 }

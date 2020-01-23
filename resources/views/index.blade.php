@@ -29,7 +29,7 @@
             <tr>
                 <td>{{ $job['id'] }}</td>
                 <td>{{ $job['class'] }}</td>
-                <td title="{{ $job['exception'] }}">{{ \Illuminate\Support\Str::limit($job['exception'], 70) }}</td>
+                <td title="{{ $job['error'] }}">{{ \Illuminate\Support\Str::limit($job['error'], 70) }}</td>
                 <td>{{ $job['failed_at'] }}</td>
                 <td class="text-center">
                     <a class="action" href="{{ route('failed-jobs-monitor.show', $job['id']) }}" title="Show Details">
