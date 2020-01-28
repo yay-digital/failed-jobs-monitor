@@ -44,7 +44,7 @@ class JobController extends Controller
 
         session()->flash('info', 'Job '.$id. ' has been queued for retry');
 
-        return redirect(route('index'));
+        return redirect(route('failed-jobs-monitor.index'));
     }
 
     public function confirmDelete($id)
@@ -68,7 +68,7 @@ class JobController extends Controller
 
         session()->flash('info', 'Job '.$id. ' has been deleted');
 
-        return redirect(route('index'));
+        return redirect(route('failed-jobs-monitor.index'));
     }
 
     /**
