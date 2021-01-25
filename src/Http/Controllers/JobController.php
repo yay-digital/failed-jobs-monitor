@@ -2,6 +2,7 @@
 
 namespace YayDigital\FailedJobsMonitor\Http\Controllers;
 
+use Illuminate\Queue\Failed\FailedJobProviderInterface;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\VarDumper\Caster\ReflectionCaster;
@@ -12,6 +13,14 @@ use YayDigital\FailedJobsMonitor\ExceptionParser;
 
 class JobController extends Controller
 {
+    /** @var FailedJobProviderInterface */
+    private $failedJobProvider;
+
+    public function __construct(FailedJobProviderInterface $failedJobProvider)
+    {
+        $this->failedJobProvider = $failedJobProvider;
+    }
+
     public function show($id)
     {
         $this->configureDumper();
@@ -62,9 +71,7 @@ class JobController extends Controller
 
     public function delete($id)
     {
-        DB::table('failed_jobs')
-            ->where('id', '=', $id)
-            ->delete();
+        $this->failedJobProvider->forget($id);
 
         session()->flash('info', 'Job '.$id. ' has been deleted');
 
@@ -77,9 +84,7 @@ class JobController extends Controller
      */
     private function getJob($id)
     {
-        $job = DB::table('failed_jobs')
-            ->where('id', '=', $id)
-            ->first();
+        $job = $this->failedJobProvider->find($id);
 
         if ($job === null) {
             abort(404);
